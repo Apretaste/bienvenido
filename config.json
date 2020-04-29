@@ -1,0 +1,8 @@
+{
+	"name": "bienvenido",
+	"caption": "Bienvenido",
+	"description": "Introduce al usuario en el uso del app y le muestra donde conseguir ayuda",
+	"category": "otros",
+	"creator": "salvi@apretaste.org",
+	"listed": true
+}
