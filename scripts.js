@@ -13,7 +13,6 @@ var slides = [
 $(document).ready(function(){
 	// initialize a carousel
 	$('.carousel').carousel({
-		indicators: true,
 		noWrap: true,
 		onCycleTo: onSlideChange
 	});

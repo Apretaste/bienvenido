@@ -2,6 +2,10 @@ body {
 	background-color: #424242;
 }
 
+.carousel {
+	height: 250px;
+}
+
 .carousel-content {
 	padding: 0px 20px;
 }
