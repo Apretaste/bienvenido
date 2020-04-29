@@ -14,6 +14,7 @@ $(document).ready(function(){
 	// initialize a carousel
 	$('.carousel').carousel({
 		noWrap: true,
+		numVisible: 3,
 		onCycleTo: onSlideChange
 	});
 });
