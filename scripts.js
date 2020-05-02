@@ -1,13 +1,13 @@
 // create the content for the slides
 var slides = [
-	{title:'Niveles', body:'Usa la app y gana beneficios. A medida que uses la app podrás subir de nivel, desbloqueando beneficios y bonos extras.'},
-	{title:'7 días', body:'Usa la app toda la semana y gana crédito. Canjea el crédito por tickets para las Rifas, amuletos de la app, recargas Cubacel, y más.'},
-	{title:'Chat', body:'Usa el servicio Chat para mantenerte comunicado con tus seres queridos, o hacer nuevos amigos entre los usuarios de la app.'},
-	{title:'Pizarra', body:'Usa nuestro servicio pizarra para expresar libremente tu opinión, tu sentir y tus pensamientos y conocer gente que piensa como tú'},
-	{title:'Piropazo', body:'Date la oportunidad y ¡Conoce nuevas personas! En nuestro servicio Piropazo podrás hacer amigos y conocer tu media naranja.'},
-	{title:'Recargas', body:'Aprovecha la oportunidad de canjear una recarga a Cubacel en nuestro servicio Recargas y mantenerte conectado todo el tiempo.'},
-	{title:'Noticias', body:'Mantente siempre informado. Con nuestra variedad de servicios de noticias podrás conocer todo el acontecer nacional y mundial.'},
-	{title:'Ayuda', body:'¿Necesitas ayuda? ¿Tienes quejas o sugerencias? ¡Escríbenos en nuestra pestaña soporte! Estaremos encantados de atenderte.'}
+	{title:'Sube de nivel', body:'Usa la app y sube de nivel. Desbloquea beneficios y premios. Alcanza el nivel más alto y sé parte del club Diamante.'},
+	{title:'Gana crédito', body:'Usa la app toda la semana, invita amig@s, contesta en encuestas y concursos, canjea cupones, y gana crédito en la app.'},
+	{title:'Usa tu crédito', body:'Saca provecho a tu crédito adquiriendo tickets para las rifas, amuletos, recargas Cubacel, bonos especiales y más.'},
+	{title:'Crea tu perfil', body:'Agrega tu avatar, color, @username, provincia y descríbete para que otros conozcan tu estilo y sepan que te gusta.'},
+	{title:'Haz amig@s', body:'Opina públicamente en la Pizarra, conoce quienes piensa como tú, haz amig@s y habla en privado usando el Chat.'},
+	{title:'Busca parejas', body:'Encuentra tu media naranja en nuestra vibrante comunidad de parejas llamada Piropazo, tenemos miembros de toda Cuba.'},
+	{title:'Ponte al día', body:'Mantente informado sobre el acontecer nacional y mundial revisando los medios de prensa más leídos en Cuba actualmente.'},
+	{title:'Recibe ayuda', body:'¿Tienes dudas sobre cómo usar la app? Escríbenos al soporte y con gusto te responderemos en un máximo de 72 horas.'}
 ];
 
 $(document).ready(function(){
