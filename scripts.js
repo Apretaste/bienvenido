@@ -29,12 +29,14 @@ function next() {
 	$('#title').html(slides[currentSlide].title);
 	$('#body').html(slides[currentSlide].body);
 
-	// set the slide image
-	$('#image').attr('src', '{{APP_SERVICE_PATH}}/images/' + currentSlide + '.png');
-	$('#image').attr('alt', slides[currentSlide].title);
+	// set the image
+	$('.image').css('display', 'none');
+	$('.image-' + currentSlide)
+		.css('display', 'inline-block')
+		.attr('alt', slides[currentSlide].title);
 
 	// set the button caption and click
-	if(currentSlide === 7) $('#btn-next').html('Siguiente');
+	if(currentSlide < 7) $('#btn-next').html('Siguiente');
 	else $('#btn-next').html('Comenzar');
 
 	// get to the next slide
