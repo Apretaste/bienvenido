@@ -10,35 +10,33 @@ var slides = [
 	{title:'Recibe ayuda', body:'¿Tienes dudas sobre cómo usar la app? Escríbenos al soporte y con gusto te responderemos en un máximo de 72 horas.'}
 ];
 
+// current slide step
+var currentSlide = 0;
+
 $(document).ready(function(){
-	// initialize a carousel
-	$('.carousel').carousel({
-		noWrap: true,
-		numVisible: 3,
-		onCycleTo: onSlideChange
-	});
+	next();
 });
 
-// callback when a slide changes
-function onSlideChange(e) {
-	// get the slide number
-	var slide = parseInt($(e).attr('slide'));
+// load the next slide
+function next() {
+	// send users home on the last slide
+	if(currentSlide === 8) {
+		apretaste.send({'command':'SERVICIOS'});
+		return false;
+	}
 
 	// set the text
-	$('#title').html(slides[slide - 1].title);
-	$('#body').html(slides[slide - 1].body);
+	$('#title').html(slides[currentSlide].title);
+	$('#body').html(slides[currentSlide].body);
+
+	// set the slide image
+	$('#image').attr('src', '{{APP_SERVICE_PATH}}/images/' + currentSlide + '.png');
+	$('#image').attr('alt', slides[currentSlide].title);
 
 	// set the button caption and click
-	if(slide === 8) $('.btn-next').html('Comenzar').off('click').click(start);
-	else $('.btn-next').html('Siguiente').off('click').click(next);
-}
+	if(currentSlide === 7) $('#btn-next').html('Siguiente');
+	else $('#btn-next').html('Comenzar');
 
-// open the next screen
-function next() {
-	$('.carousel').carousel('next');
-}
-
-// send users home
-function start() {
-	apretaste.send({'command':'SERVICIOS'});
+	// get to the next slide
+	currentSlide++;
 }
