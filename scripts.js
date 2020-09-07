@@ -7,7 +7,7 @@ var slides = [
 	{title:'Hazte popular', body:'Usando la app gana experiencia y sube en el ranking, llega al nivel Diamante, completa retos, dinámicas y concursos.'},
 	{title:'Usa tu crédito', body:'Canjea tu crédito por amuletos y adquiere poderes especiales, o por tickets para la rifa, o por recargas Cubacel.'},
 	{title:'Ahorra saldo', body:'En la pantalla inicial verás decenas de servicios de internet, optimizados para trabajar rápidamente y ahorrarte datos.'},
-	{title:'Recibe ayuda', body:'¿Tienes dudas sobre cómo funciona la app? Abre el servicio "Ayuda" y escríbeme; te responderé en menos de 72 horas.'}
+	{title:'Sé un experto', body:'¿Quieres volverte todo un experto usando Apretaste? Abre el servicio "Escuela" y léete nuestro curso tutorial.'}
 ];
 
 // current slide step
@@ -28,8 +28,8 @@ function update() {
 		break;
 
 		case 7:
-			$('#btn-back').html('Comenzar').off().click(close);
-			$('#btn-next').html('Ver tutorial').off().click(more);
+			$('#btn-back').html('Ver tutorial').addClass('green-text').off().click(tutorial);
+			$('#btn-next').html('Comenzar').off().click(close);
 		break;
 
 		default:
@@ -65,7 +65,7 @@ function close() {
 }
 
 // read the tutorial
-function more() {
+function tutorial() {
 	apretaste.send({
 		command: 'ESCUELA CURSO',
 		data: {query: tutorialId}
