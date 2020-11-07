@@ -118,6 +118,7 @@
 .modal .avatar-item {
 	display: inline-block;
 	background-color: #c1c1c1;
+	margin: 2px 5px;
 }
 
 /* SPEECH BUBBLE */

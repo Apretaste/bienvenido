@@ -41,7 +41,7 @@ $(document).ready(function() {
 // get the list of avatars
 //
 function getAvatars() {
-	return ['artista','atento','bandido','belleza','chica','coqueta','cresta','default','deportiva','dulce','emo','extranna','fabulosa','fuerte','ganadero','geek','genia','gotica','gotico','guapo','hawaiano','hippie','hombre','jefe','jugadora','libre','mago','metalero','modelo','moderna','musico','nerd','oculto','punk','punkie','rap','rapear','rapero','rock','rockera','rubia','rudo','sencilla','sencillo','sennor','sennorita','sensei','surfista','tablista','vaquera'];
+	return ['artista','atento','bandido','belleza','chica','coqueta','cresta','deportiva','dulce','emo','extranna','fabulosa','fuerte','ganadero','geek','genia','gotica','gotico','guapo','hawaiano','hippie','hombre','jefe','jugadora','libre','mago','metalero','modelo','moderna','musico','nerd','oculto','punk','punkie','rap','rapear','rapero','rock','rockera','rubia','rudo','sencilla','sencillo','sennor','sennorita','sensei','surfista','tablista','vaquera'];
 }
 
 //
