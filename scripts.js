@@ -28,7 +28,7 @@ $(document).ready(function() {
 
 		// make the check active/inactive
 		$(this).toggleClass('active');
-	})
+	});
 
 	// get values of active "checks" components
 	$.fn.value = function() {
@@ -38,9 +38,8 @@ $(document).ready(function() {
 				values.push($(e).attr('value'));
 			}
 		})
-
 		return values;
-	}
+	};
 });
 
 //
