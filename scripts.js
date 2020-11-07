@@ -1,73 +1,175 @@
-// create the content for the slides
-var slides = [
-	{title:'Hola, soy Apretín', body:'Soy la mascota de Apretaste, estoy acá para guiarte empezando a usar la app y ayudarte en lo que necesites.'},
-	{title:'Crea tu perfil', body:'Desde el menú accede a tu perfil. Agrega tu avatar, color, provincia y descríbete para que otros te conozcan.'},
-	{title:'Habla libremente', body:'Desde la barra superior, abre la Pizarra, nuestra red social donde pones lo que quieras y cuando quieras.'},
-	{title:'Haz amig@s', body:'Usando Pizarra conoce a otros que piensan como tú e invítales a ser tus amig@s. Revisa tus amig@s desde el menú.'},
-	{title:'Hazte popular', body:'Usando la app gana experiencia y sube en el ranking, llega al nivel Diamante, completa retos, dinámicas y concursos.'},
-	{title:'Usa tu crédito', body:'Canjea tu crédito por amuletos y adquiere poderes especiales, o por tickets para la rifa, o por recargas Cubacel.'},
-	{title:'Ahorra saldo', body:'En la pantalla inicial verás decenas de servicios de internet, optimizados para trabajar rápidamente y ahorrarte datos.'},
-	{title:'Sé un experto', body:'¿Quieres volverte todo un experto usando Apretaste? Abre el servicio "Escuela" y léete nuestro curso tutorial.'}
-];
+$(document).ready(function() {
+	//
+	// start basic components
+	//
+	$('.modal').modal();
 
-// current slide step
-var currentSlide = 0;
+	//
+	// start check component
+	//
 
-// load the first slide on start
-$(document).ready(function(){
-	update();
+	// checks/uncheck components
+	$('.checks .check').click(function() {
+		// get active and limit
+		var limit = $(this).parent().attr('limit');
+		var count = $(this).parent().find('.check.active').length;
+		var isActive = $(this).hasClass('active');
+
+		// jump checks if only one element allowed
+		if(limit == 1) $('.checks .check').removeClass('active');
+
+		// do not go over the limit for multiple elements
+		else if(limit != undefined && limit <= count && !isActive) return false;
+
+		// make the check active/inactive
+		$(this).toggleClass('active');
+	});
+
+	// get values of active "checks" components
+	$.fn.value = function() {
+		var values = [];
+		$(this).find('.check').each(function(i, e){
+			if($(e).hasClass('active')) {
+				values.push($(e).attr('value'));
+			}
+		})
+		return values;
+	};
 });
 
-// update the slides and buttons 
-function update() {
-	// set the buttons
-	switch(currentSlide) {
-		case 0:
-			$('#btn-back').html('Saltar').off().click(close);
-			$('#btn-next').html('Comenzar').off().click(next);
-		break;
+//
+// get the list of avatars
+//
+function getAvatars() {
+	return ['artista','atento','bandido','belleza','chica','coqueta','cresta','deportiva','dulce','emo','extranna','fabulosa','fuerte','ganadero','geek','genia','gotica','gotico','guapo','hawaiano','hippie','hombre','jefe','jugadora','libre','mago','metalero','modelo','moderna','musico','nerd','oculto','punk','punkie','rap','rapear','rapero','rock','rockera','rubia','rudo','sencilla','sencillo','sennor','sennorita','sensei','surfista','tablista','vaquera'];
+}
 
-		case 7:
-			$('#btn-back').html('Ver tutorial').addClass('green-text').off().click(tutorial);
-			$('#btn-next').html('Comenzar').off().click(close);
-		break;
+//
+// jump to another screen
+//
+function jumpTo(screenName) {
+	$('.screen').hide();
+	$('.screen.'+screenName).show();
+}
 
-		default:
-			$('#btn-back').html('Atrás').off().click(back);
-			$('#btn-next').html('Siguiente').off().click(next);
+//
+// change your username
+//
+function changeUsername() {
+	// get the username
+	var username = $('#username').val();
+
+	// validate the username
+	if(username.length <= 3 || username.match(/^\d/)) {
+		M.toast({html: 'Escriba un username válido'});
+		return false;
 	}
 
-	// set the text
-	$('#title').html(slides[currentSlide].title);
-	$('#body').html(slides[currentSlide].body);
+	// add to the list
+	person.username = username;
 
-	// set the image
-	$('.image').css('display', 'none');
-	$('.image-' + currentSlide).css('display', 'inline-block').attr('alt', slides[currentSlide].title);
+	// change in avatar screen
+	$('#avatar-username').text('@' + person.username);
+
+	// move forward
+	jumpTo('province');
 }
 
-// move to the next slide
-function next() {
-	currentSlide++;
-	update();
+//
+// change your province
+//
+function changeProvince() {
+	// get the province
+	var province = $('.checks.province').value();
+
+	// validate the province
+	if(province.length <= 0) {
+		M.toast({html: 'Escoja su provincia'});
+		return false;
+	}
+
+	// add to the list
+	person.province = province[0];
+
+	// move forward
+	jumpTo('gender');
 }
 
-// move to the previous slide
-function back() {
-	currentSlide--;
-	update();
+//
+// change your gender
+//
+function changeGender() {
+	// get the gender
+	var gender = $('.checks.gender').value();
+
+	// validate the province
+	if(gender.length <= 0) {
+		M.toast({html: 'Escoja su género'});
+		return false;
+	}
+
+	// add to the list
+	person.gender = gender[0];
+
+	// change in avatar screen
+	$('#avatar-username').removeClass('M').removeClass('F').addClass(person.gender);
+
+	// move forward
+	jumpTo('avatar');
 }
 
-// close the service
-function close() {
-	var command = isNewVersion ? 'INICIO' : 'SERVICIOS';
-	apretaste.send({command: command});
+//
+// change your avatar face
+//
+function changeAvatarFace(element) {
+	// get the avatar face
+	var face = $(element).attr('face');
+
+	// add to the list
+	person.avatar = face;
+
+	// set the avatar
+	$('#avatar').attr('face', face);
+	setElementAsAvatar($('#avatar').get());
 }
 
-// read the tutorial
-function tutorial() {
+//
+// change your avatar color
+//
+function changeAvatarColor() {
+	// get the avatar color
+	var avatarColor = $('.checks.avatar-color').value();
+
+	// add to the list
+	person.avatarColor = avatarColor[0];
+
+	// set the avatar
+	$('#avatar').attr('color', avatarColor);
+	setElementAsAvatar($('#avatar').get());
+}
+
+//
+// update the user profile
+//
+function submitData() {
+	// submit profile data
 	apretaste.send({
-		command: 'ESCUELA CURSO',
-		data: {query: tutorialId}
+		command: 'PERFIL UPDATE',
+		redirect: false,
+		data: {
+			username: person.username,
+			province: person.province,
+			gender: person.gender,
+			avatar: person.avatar,
+			avatarColor: person.avatarColor
+		},
+		callback: {name: 'openTutorialCallback'}
 	});
+}
+
+//
+// redirect to the tutorial
+//
+function openTutorialCallback() {
+	apretaste.send({command: 'BIENVENIDO TUTORIAL'});
 }
