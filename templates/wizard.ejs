@@ -144,7 +144,7 @@
 
 <div id="avatarModal" class="modal bottom-sheet fullscreen">
 	<div class="modal-content">
-		<% $(avatars).each(function(i, item) { %>
+		<% getAvatars().forEach(function(item) { %>
 			<div class="person-avatar circle avatar-item modal-close" face="<%= item %>" color="" size="40" onclick="changeAvatarFace(this)"></div>
 		<% }) %>
 	</div>
