@@ -1,8 +1,10 @@
 <?php
 
+use Apretaste\Person;
 use Apretaste\Request;
 use Apretaste\Response;
 use Framework\Config;
+use Framework\Database;
 
 class Service
 {
@@ -42,18 +44,44 @@ class Service
 			"avatarColor" => $request->person->avatarColor
 		];
 
-		// check if is version 7
-		$isVersion7 = $request->input->osType == 'web' || $request->input->appVersion >= 7;
-
 		// get the content
 		$content = [
 			"person" => $person,
-			"start" => $isVersion7 ? 'INICIO' : 'SERVICIOS'
+			"start" => $this->getHomeLink($request)
 		];
 
 		// send data to the view
 		$response->setCache();
 		$response->setTemplate("wizard.ejs", $content);
+	}
+
+	/**
+	 * Update a use profile and favorites
+	 *
+	 * @param Request
+	 * @param Response
+	 */
+	public function _update(Request $request, Response $response)
+	{
+		// get SQL array of favorites
+		$favorites = [];
+		foreach ($request->input->data->favorites as $item) {
+			$favorites[] = "({$request->person->id}, '$item')";
+		}
+
+		// replace all favorites
+		$favoritesSQL = implode(',', $favorites);
+		Database::query("
+			START TRANSACTION;
+			DELETE FROM service_favorite WHERE person_id = {$request->person->id};
+			INSERT INTO service_favorite (person_id, service) VALUES $favoritesSQL;
+			COMMIT;");
+
+		// update profile
+		Person::update($request->person->id, $request->input->data->person);
+
+		// redirect to the tutorial
+		return $this->_tutorial($request, $response);
 	}
 
 	/**
@@ -65,10 +93,25 @@ class Service
 	public function _tutorial(Request $request, Response $response)
 	{
 		// get the content
-		$tutorialId = Config::pick('general')['tutorial_id'];
+		$content = [
+			"tutorialId" => Config::pick('general')['tutorial_id'],
+			"start" => $this->getHomeLink($request)
+		];
 
 		// send data to the view
 		$response->setCache('year');
-		$response->setTemplate("tutorial.ejs", ["tutorialId" => $tutorialId]);
+		$response->setTemplate("tutorial.ejs", $content);
 	}
+
+	/**
+	 * Get link to the home service
+	 */
+	private function getHomeLink(Request $request)
+	{
+		// check if is version 7
+		$isVersion7 = $request->input->osType == 'web' || $request->input->appVersion >= 7;
+		return $isVersion7 ? 'INICIO' : 'SERVICIOS';
+	}
+
+
 }

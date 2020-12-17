@@ -2,7 +2,9 @@
 	<div class="col s12">
 		<div class="speech-bubble">
 			<div class="arrow"></div>
-			¡Ya configuré tu cuenta! Te dejo ideas para descubrir la app. Regresa acá buscando el servicio "Bienvenidos" en la lista.
+			Te dejo ideas para descubrir la app. Puedes
+			volver a <a href="#!" onclick="apretaste.send({command: 'BIENVENIDO WIZARD'})">configurar tu cuenta</a>
+			o abrir la <a href="#!" onclick="apretaste.send({command: '<%= start %>'})">lista de servicios</a>.
 		</div>
 		<div class="person-avatar circle" face="apretin" color="verde" size="60"></div>
 	</div>
@@ -79,6 +81,15 @@
 				<a href="#!" onclick="apretaste.send({command: 'INICIO'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
 			</li>
 
+			<!-- make favorite services -->
+			<% if(start == 'INICIO') { %>
+			<li class="collection-item avatar">
+				<i class="fas fa-star circle"></i>
+				<p class="blue-grey-text">Mantén presionado un servicio para hacerlo favorito.</p>
+				<a href="#!" onclick="apretaste.send({command: '<%= start %>'});" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+			</li>
+			<% } %>
+
 			<!-- edit widgets -->
 			<li class="collection-item avatar">
 				<i class="fas fa-border-all circle"></i>
@@ -98,6 +109,13 @@
 				<i class="fas fa-bullhorn circle"></i>
 				<p class="blue-grey-text">Dime dónde escuchastes sobre la app de Apretaste.</p>
 				<a href="#!" onclick="apretaste.send({command: 'PERFIL ORIGEN'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+			</li>
+
+			<!-- leave feedback -->
+			<li class="collection-item avatar">
+				<i class="fas fa-lightbulb circle"></i>
+				<p class="blue-grey-text">Haznos llegar tus sugerencias para mejorar la app.</p>
+				<a href="#!" onclick="apretaste.send({command: 'SUGERENCIAS'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
 			</li>
 
 			<!-- contact support -->

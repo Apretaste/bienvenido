@@ -136,7 +136,7 @@
 
 	<div class="col s12">
 		<button class="waves-effect waves-teal btn-flat" onclick="jumpTo('gender')">Atrás</button>
-		<button class="btn waves-effect waves-light green" onclick="submitData()">Continuar</button>
+		<button class="btn waves-effect waves-light green" onclick="jumpTo('favorites')">Continuar</button>
 	</div>
 </div>
 
@@ -147,5 +147,37 @@
 		<% getAvatars().forEach(function(item) { %>
 			<div class="person-avatar circle avatar-item modal-close" face="<%= item %>" color="" size="40" onclick="changeAvatarFace(this)"></div>
 		<% }) %>
+	</div>
+</div>
+
+<!-- FAVORITES -->
+
+<div class="row screen favorites hidden">
+	<div class="col s12">
+		<div class="speech-bubble">
+			<div class="arrow"></div>
+			¿Qué te gustaría hacer en la app? Marca todas las que te gusten para sugerirte ideas.
+		</div>
+		<div class="person-avatar circle" face="apretin" color="verde" size="60"></div>
+	</div>
+
+	<div class="col s12">
+		<div class="checks favorites">
+			<span value="FRIENDS" class="check chip spacing">Hacer amigos</span>
+			<span value="TALK" class="check chip spacing">Expresar mi opinión</span>
+			<span value="INFO" class="check chip spacing">Noticias e información</span>
+			<span value="BOLITA" class="check chip spacing">Jugar a la bolita</span>
+			<span value="DATES" class="check chip spacing">Buscar pareja</span>
+			<span value="LEARN" class="check chip spacing">Aprender cosas nuevas</span>
+			<span value="JOBS" class="check chip spacing">Buscar trabajo</span>
+			<span value="FUN" class="check chip spacing">Divertirme y jugar</span>
+			<span value="SPORTS" class="check chip spacing">Seguir los deportes</span>
+			<span value="FAITH" class="check chip spacing">Profesar mi fé</span>
+		</div>
+	</div>
+
+	<div class="col s12">
+		<button class="waves-effect waves-teal btn-flat" onclick="jumpTo('avatar')">Atrás</button>
+		<button class="btn waves-effect waves-light green" onclick="changeFavorites()">Continuar</button>
 	</div>
 </div>

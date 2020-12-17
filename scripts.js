@@ -1,12 +1,9 @@
+//
+// start components
+//
 $(document).ready(function() {
-	//
 	// start basic components
-	//
 	$('.modal').modal();
-
-	//
-	// start check component
-	//
 
 	// checks/uncheck components
 	$('.checks .check').click(function() {
@@ -149,27 +146,49 @@ function changeAvatarColor() {
 }
 
 //
-// update the user profile
+// change your favorites
 //
-function submitData() {
-	// submit profile data
-	apretaste.send({
-		command: 'PERFIL UPDATE',
-		redirect: false,
-		data: {
-			username: person.username,
-			province: person.province,
-			gender: person.gender,
-			avatar: person.avatar,
-			avatarColor: person.avatarColor
-		},
-		callback: {name: 'openTutorialCallback'}
-	});
-}
+function changeFavorites() {
+	// get the avatar color
+	var favs = $('.checks.favorites').value();
 
-//
-// redirect to the tutorial
-//
-function openTutorialCallback() {
-	apretaste.send({command: 'BIENVENIDO TUTORIAL'});
+	// validate the province
+	if(favs.length <= 0) {
+		M.toast({html: 'Escoja al menos una preferencia'});
+		return false;
+	}
+
+	// define categories
+	var services = {
+		'BASE' : ['bienvenido','invitar'],
+		'FRIENDS' : ['amigos','chat','pizarra'],
+		'TALK' : ['chat','pizarra','noticias'],
+		'INFO' : ['clima','dondehay','etecsadroyd','noticias','vuelos','television'],
+		'BOLITA' : ['bolita'],
+		'DATES' : ['piropazo','amigos'],
+		'LEARN' : ['escuela'],
+		'JOBS' : ['empleos','revoltillo'],
+		'FUN' : ['ajedrez','chiste','concurso','letras','rifa','ruleta','sudoku'],
+		'SPORTS' : ['baseball','futbol'],
+		'FAITH' : ['horoscopo','oracion']
+	};
+
+	// get unique favorites services
+	var favorites = services['BASE'];
+	favs.forEach(function(item){
+		services[item].forEach(function(i){
+			if($.inArray(i, favorites) < 0) {
+				favorites.push(i);
+			}
+		});
+	});
+
+	// submit the data
+	apretaste.send({
+		command: 'BIENVENIDO UPDATE',
+		data: {
+			person: person,
+			favorites: favorites
+		}
+	});
 }
