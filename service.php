@@ -3,6 +3,7 @@
 use Apretaste\Person;
 use Apretaste\Request;
 use Apretaste\Response;
+use Apretaste\Tutorial;
 use Framework\Config;
 use Framework\Database;
 
@@ -92,9 +93,13 @@ class Service
 	 */
 	public function _tutorial(Request $request, Response $response)
 	{
+		// get the tutorial as object of booleans
+		$tutorial = Tutorial::get($request->person->id);
+
 		// get the content
 		$content = [
 			"tutorialId" => Config::pick('general')['tutorial_id'],
+			"tutorial" => $tutorial,
 			"start" => $this->getHomeLink($request)
 		];
 

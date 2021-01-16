@@ -4,6 +4,10 @@
 	display: none;
 }
 
+.completed {
+	text-decoration: line-through;
+}
+
 .screen.start {
 	padding: 40px 40px 0px 40px !important;
 }
