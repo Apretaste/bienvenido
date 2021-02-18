@@ -1,13 +1,13 @@
 <!-- START  -->
 
-<div class="row screen start">
+<div class="row screen start     hidden">
 	<div class="col s12 center-align middle-align">
 		<img class="image" src="{{APP_SERVICE_PATH}}/images/welcome.jpg"/>
 
 		<h1>Hola, soy Apretín</h1>
 		<p>Soy la mascota de Apretaste, estoy acá para guiarte empezando a usar la app y ayudarte en lo que necesites.</p>
 
-		<button class="waves-effect waves-teal btn-flat" onclick="apretaste.send({command: '<%= start %>'})">Saltar</button>
+		<button class="waves-effect waves-teal btn-flat" onclick="apretaste.send({command: 'PIZARRA'})">Saltar</button>
 		<button class="btn waves-effect waves-light green" onclick="jumpTo('username')">Comenzar</button>
 	</div>
 </div>
@@ -136,7 +136,7 @@
 
 	<div class="col s12">
 		<button class="waves-effect waves-teal btn-flat" onclick="jumpTo('gender')">Atrás</button>
-		<button class="btn waves-effect waves-light green" onclick="jumpTo('favorites')">Continuar</button>
+		<button class="btn waves-effect waves-light green" onclick="jumpTo('interests')">Continuar</button>
 	</div>
 </div>
 
@@ -150,34 +150,48 @@
 	</div>
 </div>
 
-<!-- FAVORITES -->
+<!-- INTERESTS -->
 
-<div class="row screen favorites hidden">
+<div class="row screen interests hiddenX">
 	<div class="col s12">
 		<div class="speech-bubble">
 			<div class="arrow"></div>
-			¿Qué te gustaría hacer en la app? Marca todas las que te gusten para sugerirte ideas.
+			¿Qué temas te interesan más? Marca todas las que te gusten para sugerirte a quién seguir.
 		</div>
 		<div class="person-avatar circle" face="apretin" color="verde" size="60"></div>
 	</div>
 
 	<div class="col s12">
-		<div class="checks favorites">
-			<span value="FRIENDS" class="check chip spacing">Hacer amigos</span>
-			<span value="TALK" class="check chip spacing">Expresar mi opinión</span>
-			<span value="INFO" class="check chip spacing">Noticias e información</span>
-			<span value="BOLITA" class="check chip spacing">Jugar a la bolita</span>
-			<span value="DATES" class="check chip spacing">Buscar pareja</span>
-			<span value="LEARN" class="check chip spacing">Aprender cosas nuevas</span>
-			<span value="JOBS" class="check chip spacing">Buscar trabajo</span>
-			<span value="FUN" class="check chip spacing">Divertirme y jugar</span>
-			<span value="SPORTS" class="check chip spacing">Seguir los deportes</span>
-			<span value="FAITH" class="check chip spacing">Profesar mi fé</span>
+		<div class="checks interests">
+			<% Object.keys(categories).forEach(function(item) { %>
+				<span value="<%= item %>" class="check chip spacing"><%= categories[item] %></span>
+			<% }) %>
 		</div>
 	</div>
 
 	<div class="col s12">
 		<button class="waves-effect waves-teal btn-flat" onclick="jumpTo('avatar')">Atrás</button>
-		<button class="btn waves-effect waves-light green" onclick="changeFavorites()">Continuar</button>
+		<button class="btn waves-effect waves-light green" onclick="changeInterests()">Continuar</button>
+	</div>
+</div>
+
+<!-- INFLUENCERS -->
+
+<div class="row screen influencers hidden">
+	<div class="col s12">
+		<div class="speech-bubble">
+			<div class="arrow"></div>
+			Te sugiero seguir a estos influencers en nuestra app. Marca los que más te interesen.
+		</div>
+		<div class="person-avatar circle" face="apretin" color="verde" size="60"></div>
+	</div>
+
+	<div class="col s12">
+		<ul id="influencers" class="collection"></ul>
+	</div>
+
+	<div class="col s12">
+		<button class="waves-effect waves-teal btn-flat" onclick="jumpTo('interests')">Atrás</button>
+		<button class="btn waves-effect waves-light green" onclick="changeInfluencers()">Continuar</button>
 	</div>
 </div>

@@ -1,5 +1,6 @@
 <?php
 
+use Apretaste\Core;
 use Apretaste\Person;
 use Apretaste\Request;
 use Apretaste\Response;
@@ -45,10 +46,26 @@ class Service
 			"avatarColor" => $request->person->avatarColor
 		];
 
+		// get influencers list
+		$influencers = Database::queryCache("
+			SELECT B.username, B.avatar, B.about_me, A.first_category, A.second_category 
+			FROM influencers A
+			JOIN person B 
+			ON A.person_id = B.id
+			AND B.active = 1");
+
+		// get list of influencer categories
+		$categories = [];
+		foreach ($influencers as $item) {
+			$categories[$item->first_category] = Core::$influencerCategories[$item->first_category];
+			$categories[$item->second_category] = Core::$influencerCategories[$item->second_category];
+		}
+
 		// get the content
 		$content = [
 			"person" => $person,
-			"start" => $this->getHomeLink($request)
+			"influencers" => $influencers,
+			"categories" => $categories
 		];
 
 		// send data to the view
@@ -96,27 +113,21 @@ class Service
 		// get the tutorial as object of booleans
 		$tutorial = Tutorial::get($request->person->id);
 
+		// get link to the home service
+		$isVersion7 = $request->input->osType == 'web' || $request->input->appVersion >= 7;
+		$homeService = $isVersion7 ? 'INICIO' : 'SERVICIOS';
+
 		// get the content
 		$content = [
 			"tutorialId" => Config::pick('general')['tutorial_id'],
 			"tutorial" => $tutorial,
-			"start" => $this->getHomeLink($request)
+			"osType" => $request->input->osType,
+			"method" => $request->input->method,
+			"homeService" => $homeService
 		];
 
 		// send data to the view
 		$response->setCache('year');
 		$response->setTemplate("tutorial.ejs", $content);
 	}
-
-	/**
-	 * Get link to the home service
-	 */
-	private function getHomeLink(Request $request)
-	{
-		// check if is version 7
-		$isVersion7 = $request->input->osType == 'web' || $request->input->appVersion >= 7;
-		return $isVersion7 ? 'INICIO' : 'SERVICIOS';
-	}
-
-
 }

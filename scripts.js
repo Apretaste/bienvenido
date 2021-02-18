@@ -148,47 +148,63 @@ function changeAvatarColor() {
 //
 // change your favorites
 //
-function changeFavorites() {
-	// get the avatar color
-	var favs = $('.checks.favorites').value();
+function changeInterests() {
+	// get the list of interests
+	var interests = $('.checks.interests').value();
 
 	// validate the province
-	if(favs.length <= 0) {
-		M.toast({html: 'Escoja al menos una preferencia'});
+	if(interests.length <= 0) {
+		M.toast({html: 'Escoja al menos un interés'});
 		return false;
 	}
 
-	// define categories
-	var services = {
-		'BASE' : ['bienvenido','invitar'],
-		'FRIENDS' : ['amigos','chat','pizarra'],
-		'TALK' : ['chat','pizarra','noticias'],
-		'INFO' : ['clima','dondehay','etecsadroyd','noticias','vuelos','television'],
-		'BOLITA' : ['bolita'],
-		'DATES' : ['piropazo','amigos'],
-		'LEARN' : ['escuela'],
-		'JOBS' : ['empleos','revoltillo'],
-		'FUN' : ['ajedrez','chiste','concurso','letras','rifa','ruleta','sudoku'],
-		'SPORTS' : ['baseball','futbol'],
-		'FAITH' : ['horoscopo','oracion']
-	};
+	// delete previous list
+	$('#influencers').empty();
 
-	// get unique favorites services
-	var favorites = services['BASE'];
-	favs.forEach(function(item){
-		services[item].forEach(function(i){
-			if($.inArray(i, favorites) < 0) {
-				favorites.push(i);
-			}
-		});
+	// suggest influencers covering your interests
+	influencers.forEach(function(item){
+		// filter by interest
+		if(interests.indexOf(item.first_category) == -1 && 
+			interests.indexOf(item.second_category) == -1) return;
+
+		// append the suggestion
+		$('#influencers').append(''+
+			'<li class="collection-item avatar">' +
+			'	<i class="person-avatar circle" face="' + item.avatar + '" color="red" size="45"></i>' +
+			'	<p>@' + item.username + '</p>' +
+			'	<p class="blue-grey-text small">' + item.about_me + '</p>' +
+			'	<label class="secondary-content influencer-check">' +
+			'		<input type="checkbox" />' +
+			'		<span></span>' +
+			'	</label>' +
+			'</li>');
 	});
 
-	// submit the data
+	// update the avatar
+	$('.person-avatar').each(function (i, item) {
+		setElementAsAvatar(item);
+	});
+
+	// move to influencers
+	jumpTo('influencers');
+}
+
+//
+// change your favorites
+//
+function changeInfluencers() {
+	console.log("influencers");
+}
+
+//
+// submit the data
+//
+function submitData() {
 	apretaste.send({
 		command: 'BIENVENIDO UPDATE',
 		data: {
 			person: person,
-			favorites: favorites
+			influencers: influencers
 		}
 	});
 }

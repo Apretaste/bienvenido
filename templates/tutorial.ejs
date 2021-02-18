@@ -2,12 +2,22 @@
 	<div class="col s12">
 		<div class="speech-bubble">
 			<div class="arrow"></div>
-			Te dejo ideas para descubrir la app. Puedes volver a <a href="#!" onclick="apretaste.send({command: 'BIENVENIDO WIZARD'})">configurar tu cuenta</a> o abrir la <a href="#!" onclick="apretaste.send({command: '<%= start %>'})">lista de servicios</a>.
+			Te dejo ideas para descubrir la app. Puedes <a href="#!" onclick="apretaste.send({command: 'BIENVENIDO WIZARD'})">volver a configurar tu cuenta</a>.
 		</div>
 		<div class="person-avatar circle" face="apretin" color="verde" size="60"></div>
 	</div>
 
 	<div class="col s12">
+		<!-- VISIT PIZARRA -->
+		<ul class="collection one-line pizarra" onclick="apretaste.send({command: 'PIZARRA'})">
+			<li class="collection-item avatar green-border">
+				<i class="fas fa-clipboard-list circle green"></i>
+				<p class="green-text">Visita la Pizarra y comienza a publicar y hacer amigos.</p>
+				<a href="#!" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+			</li>
+		</ul>
+
+		<!-- LIST -->
 		<ul class="collection one-line">
 			<!-- read tutorial -->
 			<li class="collection-item avatar">
@@ -109,14 +119,14 @@
 			</li>
 
 			<!-- make favorite services -->
-			<% if(start == 'INICIO') { %>
+			<% if(homeService == 'INICIO') { %>
 			<li class="collection-item avatar">
 				<i class="fas fa-star circle"></i>
 				<p class="blue-grey-text <%= tutorial.make_favorite ? 'completed' : '' %>">Mantén presionado un servicio para hacerlo favorito.</p>
 				<% if(tutorial.make_favorite) { %>
 					<i class="secondary-content material-icons">check</i>
 				<% } else { %>
-					<a href="#!" onclick="apretaste.send({command: '<%= start %>'});" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+					<a href="#!" onclick="apretaste.send({command: '<%= homeService %>'});" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
 				<% } %>
 			</li>
 			<% } %>
@@ -175,6 +185,65 @@
 					<a href="#!" onclick="apretaste.send({command: 'AYUDA SOPORTE'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
 				<% } %>
 			</li>
+		</ul>
+
+		<!-- SOCIAL MEDIA -->
+		<ul class="collection one-line social">
+			<li class="collection-item avatar blue-border">
+				<i class="fab fa-facebook-f circle blue lighten-3"></i>
+				<p class="blue-text lighten-4">facebook.com/apretaste</p>
+				<% if(method == 'http') { %>
+					<a href="https://www.facebook.com/apretaste" target="_blank" class="secondary-content blue-text lighten-4"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+			<li class="collection-item avatar blue-border">
+				<i class="fab fa-twitter circle blue lighten-3"></i>
+				<p class="blue-text lighten-4">twitter.com/apretaste</p>
+				<% if(method == 'http') { %>
+					<a href="https://twitter.com/apretaste" target="_blank" class="secondary-content blue-text lighten-4"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+			<li class="collection-item avatar blue-border">
+				<i class="fab fa-instagram circle blue lighten-3"></i>
+				<p class="blue-text lighten-4">instagram.com/apretaste</p>
+				<% if(method == 'http') { %>
+					<a href="https://instagram.com/apretaste" target="_blank" class="secondary-content blue-text lighten-4"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+			<li class="collection-item avatar blue-border">
+				<i class="fab fa-telegram-plane circle blue lighten-3"></i>
+				<p class="blue-text lighten-4">@apretaste</p>
+				<% if(method == 'http') { %>
+					<a href="https://t.me/apretaste" target="_blank" class="secondary-content blue-text lighten-4"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+			<li class="collection-item avatar blue-border">
+				<i class="fab fa-whatsapp circle blue lighten-3"></i>
+				<p class="blue-text lighten-4">+1 510 457 1656</p>
+				<% if(method == 'http') { %>
+					<a href="https://api.whatsapp.com/send?phone=15104571656" target="_blank" class="secondary-content blue-text lighten-4"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+
+			<% if(osType == 'android') { %>
+			<li class="collection-item avatar blue-border">
+				<i class="fab fa-google-play circle blue lighten-3"></i>
+				<p class="blue-text lighten-4">Déjanos un review</p>
+				<% if(method == 'http') { %>
+					<a href="https://play.google.com/store/apps/details?id=com.apretaste.apretaste" target="_blank" class="secondary-content blue-text lighten-4"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+			<% } %>
+
+			<% if(osType == 'ios') { %>
+			<li class="collection-item avatar blue-border">
+				<i class="fab fa-apple circle blue lighten-3"></i>
+				<p class="blue-text lighten-4">Déjanos un review</p>
+				<% if(method == 'http') { %>
+					<a href="https://apps.apple.com/app/id1488232603" target="_blank" class="secondary-content blue-text lighten-4"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+			<% } %>
 		</ul>
 	</div>
 </div>
