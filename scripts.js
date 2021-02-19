@@ -152,7 +152,7 @@ function changeInterests() {
 	// get the list of interests
 	var interests = $('.checks.interests').value();
 
-	// validate the province
+	// validate the favorites
 	if(interests.length <= 0) {
 		M.toast({html: 'Escoja al menos un interés'});
 		return false;
@@ -201,6 +201,12 @@ function changeInfluencers() {
 	$('.influencer-check input:checked').each(function() {
 		influencers.push($(this).attr('data'));
 	});
+
+	// validate the influencers
+	if(influencers.length <= 0) {
+		M.toast({html: 'Escoja al menos un influencer'});
+		return false;
+	}
 
 	// submit the data
 	apretaste.send({
