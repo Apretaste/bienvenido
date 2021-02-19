@@ -170,11 +170,11 @@ function changeInterests() {
 		// append the suggestion
 		$('#influencers').append(''+
 			'<li class="collection-item avatar">' +
-			'	<i class="person-avatar circle" face="' + item.avatar + '" color="red" size="45"></i>' +
+			'	<i class="person-avatar circle" creator_image="{{APP_SERVICE_PATH}}/images/' + item.username + '.png" color="red" size="45"></i>' +
 			'	<p>@' + item.username + '</p>' +
 			'	<p class="blue-grey-text small">' + item.about_me + '</p>' +
 			'	<label class="secondary-content influencer-check">' +
-			'		<input type="checkbox" />' +
+			'		<input type="checkbox" data="' + item.username + '" />' +
 			'		<span></span>' +
 			'	</label>' +
 			'</li>');
@@ -190,16 +190,16 @@ function changeInterests() {
 }
 
 //
-// change your favorites
+// pick your influencers
 //
 function changeInfluencers() {
-	console.log("influencers");
-}
+	// get array influencers to follow
+	var influencers = [];
+	$('.influencer-check input:checked').each(function() {
+		influencers.push($(this).attr('data'));
+	});
 
-//
-// submit the data
-//
-function submitData() {
+	// submit the data
 	apretaste.send({
 		command: 'BIENVENIDO UPDATE',
 		data: {

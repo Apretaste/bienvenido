@@ -48,7 +48,7 @@ class Service
 
 		// get influencers list
 		$influencers = Database::queryCache("
-			SELECT B.username, B.avatar, B.about_me, A.first_category, A.second_category 
+			SELECT B.id, B.username, B.avatar, B.about_me, A.first_category, A.second_category 
 			FROM influencers A
 			JOIN person B 
 			ON A.person_id = B.id
@@ -81,22 +81,14 @@ class Service
 	 */
 	public function _update(Request $request, Response $response)
 	{
-		// get SQL array of favorites
-		$favorites = [];
-		foreach ($request->input->data->favorites as $item) {
-			$favorites[] = "({$request->person->id}, '$item')";
-		}
-
-		// replace all favorites
-		$favoritesSQL = implode(',', $favorites);
-		Database::query("
-			START TRANSACTION;
-			DELETE FROM service_favorite WHERE person_id = {$request->person->id};
-			INSERT INTO service_favorite (person_id, service) VALUES $favoritesSQL;
-			COMMIT;");
-
 		// update profile
 		Person::update($request->person->id, $request->input->data->person);
+
+		// connect with the influencers selected
+		foreach ($request->input->data->influencers as $username) {
+			$influencer = Person::find($username);
+			$influencer->requestFriend($request->person->id);
+		}
 
 		// redirect to the tutorial
 		return $this->_tutorial($request, $response);
