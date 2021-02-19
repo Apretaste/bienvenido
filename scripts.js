@@ -161,6 +161,9 @@ function changeInterests() {
 	// delete previous list
 	$('#influencers').empty();
 
+	// get the app service path
+	var appServicePath = $('#appServicePath').val();
+
 	// suggest influencers covering your interests
 	influencers.forEach(function(item){
 		// filter by interest
@@ -170,9 +173,9 @@ function changeInterests() {
 		// append the suggestion
 		$('#influencers').append(''+
 			'<li class="collection-item avatar">' +
-			'	<i class="person-avatar circle" creator_image="{{APP_SERVICE_PATH}}/images/' + item.username + '.png" color="red" size="45"></i>' +
-			'	<p>@' + item.username + '</p>' +
-			'	<p class="blue-grey-text small">' + item.about_me + '</p>' +
+			'	<i class="person-avatar circle" creator_image="' + appServicePath + item.username + '.png" color="red" size="45"></i>' +
+			'	<p class="blue-grey-text">@' + item.username + '</p>' +
+			'	<p class="small">' + item.about_me + '</p>' +
 			'	<label class="secondary-content influencer-check">' +
 			'		<input type="checkbox" data="' + item.username + '" />' +
 			'		<span></span>' +
