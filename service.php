@@ -87,7 +87,7 @@ class Service
 		// connect with the influencers selected
 		foreach ($request->input->data->influencers as $username) {
 			$influencer = Person::find($username);
-			$influencer->requestFriend($request->person->id);
+			$request->person->requestFriend($influencer->id);
 		}
 
 		// redirect to the tutorial
