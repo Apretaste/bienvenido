@@ -7,8 +7,8 @@
 		<h1>Hola, soy Apretín</h1>
 		<p>Soy la mascota de Apretaste, estoy acá para guiarte empezando a usar la app y ayudarte en lo que necesites.</p>
 
-		<button class="waves-effect waves-teal btn-flat" onclick="apretaste.send({command: 'PIZARRA'})">Saltar</button>
-		<button class="btn waves-effect waves-light green" onclick="jumpTo('username')">Comenzar</button>
+		<button class="btn-flat" onclick="apretaste.send({command: 'PIZARRA'})">Saltar</button>
+		<button class="btn green" onclick="jumpTo('username')">Comenzar</button>
 	</div>
 </div>
 
@@ -32,8 +32,8 @@
 	</div>
 	
 	<div class="col s12">
-		<button class="waves-effect waves-teal btn-flat" onclick="jumpTo('province')">Saltar</button>
-		<button class="btn waves-effect waves-light green" onclick="changeUsername()">Cambiar</button>
+		<button class="btn-flat" onclick="jumpTo('province')">Saltar</button>
+		<button class="btn green" onclick="changeUsername()">Cambiar</button>
 	</div>
 </div>
 
@@ -49,7 +49,7 @@
 	</div>
 
 	<div class="col s12">
-		<div class="checks province" limit="1">
+		<div class="checks province" limit="1" active="<%= person.province %>">
 			<span value="" class="check chip spacing">Vivo fuera de Cuba</span>
 			<span value="PINAR_DEL_RIO" class="check chip spacing">Pinar del Río</span>
 			<span value="LA_HABANA" class="check chip spacing">La Habana</span>
@@ -71,8 +71,8 @@
 	</div>
 
 	<div class="col s12">
-		<button class="waves-effect waves-teal btn-flat" onclick="jumpTo('username')">Atrás</button>
-		<button class="btn waves-effect waves-light green" onclick="changeProvince()">Continuar</button>
+		<button class="btn-flat" onclick="jumpTo('username')">Atrás</button>
+		<button class="btn green" onclick="changeProvince()">Continuar</button>
 	</div>
 </div>
 
@@ -88,7 +88,7 @@
 	</div>
 
 	<div class="col s12">
-		<div class="checks gender" limit="1">
+		<div class="checks gender" limit="1" active="<%= person.gender %>">
 			<span value="M" class="check chip spacing">Masculino</span>
 			<span value="F" class="check chip spacing">Femenino</span>
 			<span value="" class="check chip spacing">Prefiero no decir</span>
@@ -96,8 +96,8 @@
 	</div>
 
 	<div class="col s12">
-		<button class="waves-effect waves-teal btn-flat" onclick="jumpTo('province')">Atrás</button>
-		<button class="btn waves-effect waves-light green" onclick="changeGender()">Continuar</button>
+		<button class="btn-flat" onclick="jumpTo('province')">Atrás</button>
+		<button class="btn green" onclick="changeGender()">Continuar</button>
 	</div>
 </div>
 
@@ -113,7 +113,7 @@
 	</div>
 
 	<div class="col s12">
-		<div class="checks avatar-color" limit="1" onclick="changeAvatarColor()">
+		<div class="checks avatar-color" limit="1" active="<%= person.avatarColor %>" onclick="changeAvatarColor()">
 			<span value="azul" class="check chip spacing"><span class="color azul"></span> Azul</span>
 			<span value="verde" class="check chip spacing"><span class="color verde"></span> Verde</span>
 			<span value="rojo" class="check chip spacing"><span class="color rojo"></span> Rojo</span>
@@ -127,7 +127,7 @@
 		<ul class="collection profile">
 			<li class="collection-item avatar">
 				<div id="avatar" class="person-avatar circle" face="<%= person.avatar %>" color="<%= person.avatarColor %>" size="45"></div>
-				<span id="avatar-username" class="title">@<%= person.username %></span>
+				<span id="avatar-username" class="title <%= person.gender %>">@<%= person.username %></span>
 				<p>Escoge tu avatar</p>
 				<a href="#avatarModal" class="secondary-content green-text modal-trigger"><i class="material-icons">edit</i></a>
 			</li>
@@ -135,8 +135,8 @@
 	</div>
 
 	<div class="col s12">
-		<button class="waves-effect waves-teal btn-flat" onclick="jumpTo('gender')">Atrás</button>
-		<button class="btn waves-effect waves-light green" onclick="jumpTo('interests')">Continuar</button>
+		<button class="btn-flat" onclick="jumpTo('gender')">Atrás</button>
+		<button class="btn green" onclick="changeAvatar()">Continuar</button>
 	</div>
 </div>
 
@@ -150,49 +150,27 @@
 	</div>
 </div>
 
-<!-- INTERESTS -->
+<!-- DEFAULT SERVICE -->
 
-<div class="row screen interests hidden">
+<div class="row screen default-service hidden">
 	<div class="col s12">
 		<div class="speech-bubble">
 			<div class="arrow"></div>
-			¿Qué temas te interesan más? Marca todas las que te gusten para sugerirte a quién seguir.
+			¿Qué te interesa más en la app? Esto configurará tu experiencia de navegación, puedes cambiarla desde los ajustes.
 		</div>
 		<div class="person-avatar circle" face="apretin" color="verde" size="60"></div>
 	</div>
 
 	<div class="col s12">
-		<div class="checks interests">
-			<% Object.keys(categories).forEach(function(item) { %>
-				<span value="<%= item %>" class="check chip spacing"><%= categories[item] %></span>
+		<div class="checks default-service" limit="1" active="<%= person.defaultService %>">
+			<% Object.keys(defaultServiceList).forEach(function(item) { %>
+				<span value="<%= item %>" class="check chip spacing modal-close"><%= defaultServiceList[item] %></span>
 			<% }) %>
 		</div>
 	</div>
 
 	<div class="col s12">
-		<button class="waves-effect waves-teal btn-flat" onclick="jumpTo('avatar')">Atrás</button>
-		<button class="btn waves-effect waves-light green" onclick="changeInterests()">Continuar</button>
-	</div>
-</div>
-
-<!-- INFLUENCERS -->
-
-<div class="row screen influencers hidden">
-	<div class="col s12">
-		<div class="speech-bubble">
-			<div class="arrow"></div>
-			Te sugiero seguir a estos influencers en nuestra app. Marca todos los que te interesen.
-		</div>
-		<div class="person-avatar circle" face="apretin" color="verde" size="60"></div>
-	</div>
-
-	<div class="col s12">
-		<input id="appServicePath" type="hidden" value="{{APP_SERVICE_PATH}}/images/">
-		<ul id="influencers" class="collection"></ul>
-	</div>
-
-	<div class="col s12">
-		<button class="waves-effect waves-teal btn-flat" onclick="jumpTo('interests')">Atrás</button>
-		<button class="btn waves-effect waves-light green" onclick="changeInfluencers()">Comenzar</button>
+		<button class="btn-flat start_tutorial" onclick="jumpTo('avatar')">Atrás</button>
+		<button class="btn green start_tutorial" onclick="changeDefaultService()">Empezar</button>
 	</div>
 </div>

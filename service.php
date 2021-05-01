@@ -40,10 +40,11 @@ class Service
 		// create a subset of the person object
 		$person = [
 			"username" => $request->person->username,
-			"province" => $request->person->gender,
+			"province" => (string) $request->person->provinceCode,
 			"gender" => $request->person->gender,
 			"avatar" => $request->person->avatar,
-			"avatarColor" => $request->person->avatarColor
+			"avatarColor" => $request->person->avatarColor,
+			"defaultService" => $request->person->defaultService
 		];
 
 		// get influencers list
@@ -65,33 +66,12 @@ class Service
 		$content = [
 			"person" => $person,
 			"influencers" => $influencers,
-			"categories" => $categories
+			"categories" => $categories,
+			'defaultServiceList' => Core::$defaultServices
 		];
 
 		// send data to the view
-		$response->setCache();
 		$response->setTemplate("wizard.ejs", $content);
-	}
-
-	/**
-	 * Update a use profile and favorites
-	 *
-	 * @param Request
-	 * @param Response
-	 */
-	public function _update(Request $request, Response $response)
-	{
-		// update profile
-		Person::update($request->person->id, $request->input->data->person);
-
-		// connect with the influencers selected
-		foreach ($request->input->data->influencers as $username) {
-			$influencer = Person::find($username);
-			$request->person->requestFriend($influencer->id);
-		}
-
-		// redirect to the tutorial
-		return $this->_tutorial($request, $response);
 	}
 
 	/**
