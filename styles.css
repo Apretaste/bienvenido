@@ -166,13 +166,3 @@
 	bottom: -8px;
 	margin-left: 10px;
 }
-
-/* CHECKBOXES */
-
-#influencers {
-	margin: 0px;
-}
-
-.influencer-check span {
-	padding-left: 20px !important;
-}
