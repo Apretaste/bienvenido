@@ -2,110 +2,248 @@
 	<div class="col s12">
 		<div class="speech-bubble">
 			<div class="arrow"></div>
-			¡Ya configuré tu cuenta! Te dejo ideas para descubrir la app. Regresa acá buscando el servicio "Bienvenidos" en la lista.
+			Te dejo ideas para descubrir la app. Puedes <a href="#!" onclick="apretaste.send({command: 'BIENVENIDO WIZARD'})">volver a configurar tu cuenta</a>.
 		</div>
 		<div class="person-avatar circle" face="apretin" color="verde" size="60"></div>
 	</div>
 
 	<div class="col s12">
+		<!-- VISIT PIZARRA -->
+		<ul class="collection one-line pizarra" onclick="apretaste.send({command: 'PIZARRA'})">
+			<li class="collection-item avatar green-border">
+				<i class="fas fa-hashtag circle green"></i>
+				<p class="green-text">Visita la Pizarra y comienza a publicar y hacer amigos.</p>
+				<a href="#!" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+			</li>
+		</ul>
+
+		<!-- LIST -->
 		<ul class="collection one-line">
 			<!-- read tutorial -->
 			<li class="collection-item avatar">
 				<i class="fas fa-graduation-cap circle"></i>
-				<p class="blue-grey-text">Abre el servicio Escuela y lee el tutorial de como usar la app.</p>
-				<a href="#!" onclick="apretaste.send({command: 'ESCUELA CURSO', data: {query:tutorialId}});" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<p class="blue-grey-text <%= tutorial.read_tutorial ? 'completed' : '' %>">Abre el servicio Escuela y lee el tutorial de como usar la app.</p>
+				<% if(tutorial.read_tutorial) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: 'ESCUELA CURSO', data: {query:tutorialId}});" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
 			</li>
 
 			<!-- fill profile -->
 			<li class="collection-item avatar">
 				<i class="fas fa-user circle"></i>
-				<p class="blue-grey-text">Completa todo tu Perfil para que otros te conozcan.</p>
-				<a href="#!" onclick="apretaste.send({command: 'PERFIL EDITAR'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<p class="blue-grey-text <%= tutorial.fill_profile ? 'completed' : '' %>">Completa todo tu Perfil para que otros te conozcan.</p>
+				<% if(tutorial.fill_profile) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: 'PERFIL EDITAR'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
 			</li>
 
 			<!-- add apretin -->
 			<li class="collection-item avatar">
 				<i class="fas fa-users circle"></i>
-				<p class="blue-grey-text">Pídeme amistad en el servicio "Amigos", buscando por "apretin".</p>
-				<a href="#!" onclick="apretaste.send({command: 'AMIGOS'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<p class="blue-grey-text <%= tutorial.add_apretin ? 'completed' : '' %>">Pídeme amistad en el servicio "Amigos", buscando por "apretin".</p>
+				<% if(tutorial.add_apretin) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: 'AMIGOS'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
 			</li>
 
 			<!-- post in pizarra -->
 			<li class="collection-item avatar">
 				<i class="fas fa-clipboard-list circle"></i>
-				<p class="blue-grey-text">Abre la Pizarra y escribe tu primera nota saludado a todos.</p>
-				<a href="#!" onclick="apretaste.send({command: 'PIZARRA'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<p class="blue-grey-text <%= tutorial.post_pizarra ? 'completed' : '' %>">Abre la Pizarra y escribe tu primera nota saludado a todos.</p>
+				<% if(tutorial.post_pizarra) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: 'PIZARRA'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
 			</li>
 
 			<!-- find friends -->
 			<li class="collection-item avatar">
 				<i class="fas fa-users circle"></i>
-				<p class="blue-grey-text">Busca usuarios online en el servicio Chat, y pídeles amistad.</p>
-				<a href="#!" onclick="apretaste.send({command: 'CHAT ONLINE'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<p class="blue-grey-text <%= tutorial.find_friends ? 'completed' : '' %>">Busca usuarios online en el servicio Chat, y pídeles amistad.</p>
+				<% if(tutorial.find_friends) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: 'CHAT ONLINE'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
 			</li>
 
 			<!-- read news -->
 			<li class="collection-item avatar">
 				<i class="fas fa-newspaper circle"></i>
-				<p class="blue-grey-text">Revisa que pasa fuera y dentro de Cuba en el servicio Noticias.</p>
-				<a href="#!" onclick="apretaste.send({command: 'NOTICIAS'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<p class="blue-grey-text <%= tutorial.read_news ? 'completed' : '' %>">Revisa que pasa fuera y dentro de Cuba en el servicio Noticias.</p>
+				<% if(tutorial.read_news) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: 'NOTICIAS'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
 			</li>
 
 			<!-- get credits -->
 			<li class="collection-item avatar">
 				<i class="fas fa-coins circle"></i>
-				<p class="blue-grey-text">Leéte las maneras de adquirir créditos y como canjearlos.</p>
-				<a href="#!" onclick="apretaste.send({command: 'CREDITO OBTENER'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<p class="blue-grey-text <%= tutorial.get_credits ? 'completed' : '' %>">Leéte las maneras de adquirir créditos y como canjearlos.</p>
+				<% if(tutorial.get_credits) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: 'CREDITO OBTENER'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
 			</li>
 
 			<!-- check ranking -->
 			<li class="collection-item avatar">
 				<i class="fas fa-trophy circle"></i>
-				<p class="blue-grey-text">Abre el Ranking semanal y busca cómo adquirir experiencia.</p>
-				<a href="#!" onclick="apretaste.send({command: 'RANKING'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<p class="blue-grey-text <%= tutorial.check_ranking ? 'completed' : '' %>">Abre el Ranking semanal y busca cómo adquirir experiencia.</p>
+				<% if(tutorial.check_ranking) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: 'RANKING'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
 			</li>
 
 			<!-- buy raffle tickect -->
 			<li class="collection-item avatar">
 				<i class="fas fa-ticket-alt circle"></i>
-				<p class="blue-grey-text">Canjea un ticket para que participes en la Rifa en curso.</p>
-				<a href="#!" onclick="apretaste.send({command: 'RIFA TICKETS'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<p class="blue-grey-text <%= tutorial.raffle_ticket ? 'completed' : '' %>">Canjea un ticket para que participes en la Rifa en curso.</p>
+				<% if(tutorial.raffle_ticket) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: 'RIFA TICKETS'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
 			</li>
 
-			<!-- check services -->
+			<!-- make favorite services -->
+			<% if(homeService == 'INICIO') { %>
 			<li class="collection-item avatar">
-				<i class="fas fa-icons circle"></i>
-				<p class="blue-grey-text">Revisa la lista de servicios, abre todos los que te interesen.</p>
-				<a href="#!" onclick="apretaste.send({command: 'INICIO'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<i class="fas fa-star circle"></i>
+				<p class="blue-grey-text <%= tutorial.make_favorite ? 'completed' : '' %>">Mantén presionado un servicio para hacerlo favorito.</p>
+				<% if(tutorial.make_favorite) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: '<%= homeService %>'});" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
 			</li>
+			<% } %>
 
 			<!-- edit widgets -->
 			<li class="collection-item avatar">
 				<i class="fas fa-border-all circle"></i>
-				<p class="blue-grey-text">Desde el menú, edita tus widgets de la pantalla de inicio.</p>
-				<a href="#!" onclick="apretaste.send({command: 'INICIO EDITAR'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<p class="blue-grey-text <%= tutorial.edit_widgets ? 'completed' : '' %>">Desde el menú, edita tus widgets de la pantalla de inicio.</p>
+				<% if(tutorial.edit_widgets) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: 'INICIO EDITAR'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
 			</li>
 
 			<!-- read terms -->
 			<li class="collection-item avatar">
 				<i class="fas fa-list-ol circle"></i>
-				<p class="blue-grey-text">Léete los términos de uso de Apretaste y de la Pizarra.</p>
-				<a href="#!" onclick="apretaste.send({command: 'TERMINOS'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<p class="blue-grey-text <%= tutorial.read_terms ? 'completed' : '' %>">Léete los términos de uso de Apretaste y de la Pizarra.</p>
+				<% if(tutorial.read_terms) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: 'TERMINOS'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
 			</li>
 
 			<!-- app origin -->
 			<li class="collection-item avatar">
 				<i class="fas fa-bullhorn circle"></i>
-				<p class="blue-grey-text">Dime dónde escuchastes sobre la app de Apretaste.</p>
-				<a href="#!" onclick="apretaste.send({command: 'PERFIL ORIGEN'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<p class="blue-grey-text <%= tutorial.app_origin ? 'completed' : '' %>">Dime dónde escuchastes sobre la app de Apretaste.</p>
+				<% if(tutorial.app_origin) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: 'PERFIL ORIGEN'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+
+			<!-- leave feedback -->
+			<li class="collection-item avatar">
+				<i class="fas fa-lightbulb circle"></i>
+				<p class="blue-grey-text <%= tutorial.leave_feedback ? 'completed' : '' %>">Haznos llegar tus sugerencias para mejorar la app.</p>
+				<% if(tutorial.leave_feedback) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: 'SUGERENCIAS'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
 			</li>
 
 			<!-- contact support -->
 			<li class="collection-item avatar">
 				<i class="fas fa-headset circle"></i>
-				<p class="blue-grey-text">¿Tienes alguna duda? Escríbeme desde el servicio "Ayuda".</p>
-				<a href="#!" onclick="apretaste.send({command: 'AYUDA SOPORTE'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<p class="blue-grey-text <%= tutorial.contact_support ? 'completed' : '' %>">¿Tienes alguna duda? Escríbeme desde el servicio "Ayuda".</p>
+				<% if(tutorial.contact_support) { %>
+					<i class="secondary-content material-icons">check</i>
+				<% } else { %>
+					<a href="#!" onclick="apretaste.send({command: 'AYUDA SOPORTE'})" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
 			</li>
+		</ul>
+
+		<!-- SOCIAL MEDIA -->
+		<ul class="collection one-line social">
+			<li class="collection-item avatar blue-border">
+				<i class="fab fa-facebook-f circle blue lighten-3"></i>
+				<p class="blue-text lighten-4">facebook.com/apretaste</p>
+				<% if(method == 'http') { %>
+					<a href="https://www.facebook.com/apretaste" target="_blank" class="secondary-content blue-text lighten-4"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+			<li class="collection-item avatar blue-border">
+				<i class="fab fa-twitter circle blue lighten-3"></i>
+				<p class="blue-text lighten-4">twitter.com/apretaste</p>
+				<% if(method == 'http') { %>
+					<a href="https://twitter.com/apretaste" target="_blank" class="secondary-content blue-text lighten-4"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+			<li class="collection-item avatar blue-border">
+				<i class="fab fa-instagram circle blue lighten-3"></i>
+				<p class="blue-text lighten-4">instagram.com/apretaste</p>
+				<% if(method == 'http') { %>
+					<a href="https://instagram.com/apretaste" target="_blank" class="secondary-content blue-text lighten-4"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+			<li class="collection-item avatar blue-border">
+				<i class="fab fa-telegram-plane circle blue lighten-3"></i>
+				<p class="blue-text lighten-4">@apretaste</p>
+				<% if(method == 'http') { %>
+					<a href="https://t.me/apretaste" target="_blank" class="secondary-content blue-text lighten-4"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+			<li class="collection-item avatar blue-border">
+				<i class="fab fa-whatsapp circle blue lighten-3"></i>
+				<p class="blue-text lighten-4">+1 510 457 1656</p>
+				<% if(method == 'http') { %>
+					<a href="https://api.whatsapp.com/send?phone=15104571656" target="_blank" class="secondary-content blue-text lighten-4"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+
+			<% if(osType == 'android') { %>
+			<li class="collection-item avatar blue-border">
+				<i class="fab fa-google-play circle blue lighten-3"></i>
+				<p class="blue-text lighten-4">Déjanos un review</p>
+				<% if(method == 'http') { %>
+					<a href="https://play.google.com/store/apps/details?id=com.apretaste.apretaste" target="_blank" class="secondary-content blue-text lighten-4"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+			<% } %>
+
+			<% if(osType == 'ios') { %>
+			<li class="collection-item avatar blue-border">
+				<i class="fab fa-apple circle blue lighten-3"></i>
+				<p class="blue-text lighten-4">Déjanos un review</p>
+				<% if(method == 'http') { %>
+					<a href="https://apps.apple.com/app/id1488232603" target="_blank" class="secondary-content blue-text lighten-4"><i class="material-icons">arrow_forward</i></a>
+				<% } %>
+			</li>
+			<% } %>
 		</ul>
 	</div>
 </div>

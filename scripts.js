@@ -1,12 +1,31 @@
+//
+// start components
+//
 $(document).ready(function() {
-	//
 	// start basic components
-	//
 	$('.modal').modal();
 
-	//
-	// start check component
-	//
+	// set default values for the checks
+	startCheck($('.checks.province'));
+	startCheck($('.checks.gender'));
+	startCheck($('.checks.avatar-color'));
+	startCheck($('.checks.default-service'));
+
+	// start the checks component
+	function startCheck(el) {
+		// only load if check list exists
+		if($(el).attr('active') == undefined) return false;
+
+		// get default active options
+		var active = $(el).attr('active').split(',');
+
+		// check default active options
+		$(el).find('.check').each(function(i, e){
+			if(active.includes($(e).attr('value'))) {
+				$(e).addClass('active');
+			}
+		});
+	}
 
 	// checks/uncheck components
 	$('.checks .check').click(function() {
@@ -45,19 +64,17 @@ function getAvatars() {
 }
 
 //
-// jump to another screen
-//
-function jumpTo(screenName) {
-	$('.screen').hide();
-	$('.screen.'+screenName).show();
-}
-
-//
 // change your username
 //
 function changeUsername() {
 	// get the username
 	var username = $('#username').val();
+
+	// just jump if no changes
+	if(username == person.username) {
+		jumpTo('province');
+		return true;
+	}
 
 	// validate the username
 	if(username.length <= 3 || username.match(/^\d/)) {
@@ -65,11 +82,18 @@ function changeUsername() {
 		return false;
 	}
 
-	// add to the list
+	// change in avatar screen
+	$('#avatar-username').text('@' + username);
+
+	// update the change in the frontend
 	person.username = username;
 
-	// change in avatar screen
-	$('#avatar-username').text('@' + person.username);
+	// change in the backend
+	apretaste.send({
+		command: 'PERFIL UPDATE',
+		data: {username: username},
+		redirect: false
+	});
 
 	// move forward
 	jumpTo('province');
@@ -82,14 +106,27 @@ function changeProvince() {
 	// get the province
 	var province = $('.checks.province').value();
 
+	// just jump if no changes
+	if(province[0] == person.province) {
+		jumpTo('gender');
+		return true;
+	}
+
 	// validate the province
 	if(province.length <= 0) {
 		M.toast({html: 'Escoja su provincia'});
 		return false;
 	}
 
-	// add to the list
+	// update the change in the frontend
 	person.province = province[0];
+
+	// change in the backend
+	apretaste.send({
+		command: 'PERFIL UPDATE',
+		data: {province: province[0]},
+		redirect: false
+	});
 
 	// move forward
 	jumpTo('gender');
@@ -102,14 +139,27 @@ function changeGender() {
 	// get the gender
 	var gender = $('.checks.gender').value();
 
+	// just jump if no changes
+	if(gender[0] == person.gender) {
+		jumpTo('avatar');
+		return true;
+	}
+
 	// validate the province
 	if(gender.length <= 0) {
 		M.toast({html: 'Escoja su género'});
 		return false;
 	}
 
-	// add to the list
+	// update the change in the frontend
 	person.gender = gender[0];
+
+	// change in the backend
+	apretaste.send({
+		command: 'PERFIL UPDATE',
+		data: {gender: gender[0]},
+		redirect: false
+	});
 
 	// change in avatar screen
 	$('#avatar-username').removeClass('M').removeClass('F').addClass(person.gender);
@@ -119,17 +169,43 @@ function changeGender() {
 }
 
 //
+// change your avatar
+//
+function changeAvatar() {
+	// get the avatar
+	var avatar = $('#avatar').attr('face');
+	var avatarColor = $('.checks.avatar-color').value();
+
+	// just jump if no changes
+	if(avatar == person.avatar && avatarColor[0] == person.avatarColor) {
+		jumpTo('default-service');
+		return true;
+	}
+
+	// update the change in the frontend
+	person.avatar = avatar;
+	person.avatarColor = avatarColor[0];
+
+	// change in the backend
+	apretaste.send({
+		command: 'PERFIL UPDATE',
+		data: {avatar: avatar, avatarColor: avatarColor[0]},
+		redirect: false
+	});
+
+	// move forward
+	jumpTo('default-service');
+}
+
+//
 // change your avatar face
 //
 function changeAvatarFace(element) {
 	// get the avatar face
-	var face = $(element).attr('face');
-
-	// add to the list
-	person.avatar = face;
+	var avatar = $(element).attr('face');
 
 	// set the avatar
-	$('#avatar').attr('face', face);
+	$('#avatar').attr('face', avatar);
 	setElementAsAvatar($('#avatar').get());
 }
 
@@ -140,36 +216,54 @@ function changeAvatarColor() {
 	// get the avatar color
 	var avatarColor = $('.checks.avatar-color').value();
 
-	// add to the list
-	person.avatarColor = avatarColor[0];
-
 	// set the avatar
-	$('#avatar').attr('color', avatarColor);
+	$('#avatar').attr('color', avatarColor[0]);
 	setElementAsAvatar($('#avatar').get());
 }
 
 //
-// update the user profile
+// change your default service
 //
-function submitData() {
-	// submit profile data
+function changeDefaultService() {
+	// get the gender
+	var defaultService = $('.checks.default-service').value();
+
+	// just jump if no changes
+	if(defaultService[0] == person.defaultService) {
+		jumpToTutorial();
+		return true;
+	}
+
+	// validate the province
+	if(defaultService.length <= 0) {
+		M.toast({html: 'Escoja una experiencia'});
+		return false;
+	}
+
+	// update the change in the frontend
+	person.defaultService = defaultService[0];
+
+	// change in the backend
 	apretaste.send({
 		command: 'PERFIL UPDATE',
+		data: {default_service: defaultService[0]},
 		redirect: false,
-		data: {
-			username: person.username,
-			province: person.province,
-			gender: person.gender,
-			avatar: person.avatar,
-			avatarColor: person.avatarColor
-		},
-		callback: {name: 'openTutorialCallback'}
+		callback: jumpToTutorial
 	});
 }
 
 //
-// redirect to the tutorial
+// jump to another screen
 //
-function openTutorialCallback() {
+function jumpTo(screenName) {
+	$('.screen').hide();
+	$('.screen.'+screenName).show();
+}
+
+//
+// jump to the tutorial
+//
+function jumpToTutorial() {
+	$('.start_tutorial').prop('disabled', true);
 	apretaste.send({command: 'BIENVENIDO TUTORIAL'});
 }

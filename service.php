@@ -1,8 +1,12 @@
 <?php
 
+use Apretaste\Core;
+use Apretaste\Config;
+use Apretaste\Person;
 use Apretaste\Request;
 use Apretaste\Response;
-use Framework\Config;
+use Apretaste\Tutorial;
+use Apretaste\Database;
 
 class Service
 {
@@ -36,23 +40,37 @@ class Service
 		// create a subset of the person object
 		$person = [
 			"username" => $request->person->username,
-			"province" => $request->person->gender,
+			"province" => (string) $request->person->provinceCode,
 			"gender" => $request->person->gender,
 			"avatar" => $request->person->avatar,
-			"avatarColor" => $request->person->avatarColor
+			"avatarColor" => $request->person->avatarColor,
+			"defaultService" => $request->person->defaultService
 		];
 
-		// check if is version 7
-		$isVersion7 = $request->input->osType == 'web' || $request->input->appVersion >= 7;
+		// get influencers list
+		$influencers = Database::queryCache("
+			SELECT B.id, B.username, B.avatar, B.about_me, A.first_category, A.second_category 
+			FROM influencers A
+			JOIN person B 
+			ON A.person_id = B.id
+			AND B.active = 1");
+
+		// get list of influencer categories
+		$categories = [];
+		foreach ($influencers as $item) {
+			$categories[$item->first_category] = Core::$influencerCategories[$item->first_category];
+			$categories[$item->second_category] = Core::$influencerCategories[$item->second_category];
+		}
 
 		// get the content
 		$content = [
 			"person" => $person,
-			"start" => $isVersion7 ? 'INICIO' : 'SERVICIOS'
+			"influencers" => $influencers,
+			"categories" => $categories,
+			'defaultServiceList' => Core::$defaultServices
 		];
 
 		// send data to the view
-		$response->setCache();
 		$response->setTemplate("wizard.ejs", $content);
 	}
 
@@ -64,11 +82,24 @@ class Service
 	 */
 	public function _tutorial(Request $request, Response $response)
 	{
+		// get the tutorial as object of booleans
+		$tutorial = Tutorial::get($request->person->id);
+
+		// get link to the home service
+		$isVersion7 = $request->input->osType == 'web' || $request->input->appVersion >= 7;
+		$homeService = $isVersion7 ? 'INICIO' : 'SERVICIOS';
+
 		// get the content
-		$tutorialId = Config::pick('general')['tutorial_id'];
+		$content = [
+			"tutorialId" => Config::pick('general')['tutorial_id'],
+			"tutorial" => $tutorial,
+			"osType" => $request->input->osType,
+			"method" => $request->input->method,
+			"homeService" => $homeService
+		];
 
 		// send data to the view
 		$response->setCache('year');
-		$response->setTemplate("tutorial.ejs", ["tutorialId" => $tutorialId]);
+		$response->setTemplate("tutorial.ejs", $content);
 	}
 }
