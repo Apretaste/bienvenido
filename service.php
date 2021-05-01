@@ -1,12 +1,12 @@
 <?php
 
 use Apretaste\Core;
+use Apretaste\Config;
 use Apretaste\Person;
 use Apretaste\Request;
 use Apretaste\Response;
 use Apretaste\Tutorial;
-use Framework\Config;
-use Framework\Database;
+use Apretaste\Database;
 
 class Service
 {
