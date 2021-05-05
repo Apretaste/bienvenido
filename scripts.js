@@ -248,7 +248,7 @@ function changeDefaultService() {
 		command: 'PERFIL UPDATE',
 		data: {default_service: defaultService[0]},
 		redirect: false,
-		callback: jumpToTutorial
+		callback: {name: 'jumpToTutorial'}
 	});
 }
 
