@@ -5,6 +5,28 @@ $(document).ready(function() {
 	// start basic components
 	$('.modal').modal();
 
+	// set default values for the checks
+	startCheck($('.checks.province'));
+	startCheck($('.checks.gender'));
+	startCheck($('.checks.avatar-color'));
+	startCheck($('.checks.default-service'));
+
+	// start the checks component
+	function startCheck(el) {
+		// only load if check list exists
+		if($(el).attr('active') == undefined) return false;
+
+		// get default active options
+		var active = $(el).attr('active').split(',');
+
+		// check default active options
+		$(el).find('.check').each(function(i, e){
+			if(active.includes($(e).attr('value'))) {
+				$(e).addClass('active');
+			}
+		});
+	}
+
 	// checks/uncheck components
 	$('.checks .check').click(function() {
 		// get active and limit
@@ -42,19 +64,17 @@ function getAvatars() {
 }
 
 //
-// jump to another screen
-//
-function jumpTo(screenName) {
-	$('.screen').hide();
-	$('.screen.'+screenName).show();
-}
-
-//
 // change your username
 //
 function changeUsername() {
 	// get the username
 	var username = $('#username').val();
+
+	// just jump if no changes
+	if(username == person.username) {
+		jumpTo('province');
+		return true;
+	}
 
 	// validate the username
 	if(username.length <= 3 || username.match(/^\d/)) {
@@ -62,11 +82,18 @@ function changeUsername() {
 		return false;
 	}
 
-	// add to the list
+	// change in avatar screen
+	$('#avatar-username').text('@' + username);
+
+	// update the change in the frontend
 	person.username = username;
 
-	// change in avatar screen
-	$('#avatar-username').text('@' + person.username);
+	// change in the backend
+	apretaste.send({
+		command: 'PERFIL UPDATE',
+		data: {username: username},
+		redirect: false
+	});
 
 	// move forward
 	jumpTo('province');
@@ -79,14 +106,27 @@ function changeProvince() {
 	// get the province
 	var province = $('.checks.province').value();
 
+	// just jump if no changes
+	if(province[0] == person.province) {
+		jumpTo('gender');
+		return true;
+	}
+
 	// validate the province
 	if(province.length <= 0) {
 		M.toast({html: 'Escoja su provincia'});
 		return false;
 	}
 
-	// add to the list
+	// update the change in the frontend
 	person.province = province[0];
+
+	// change in the backend
+	apretaste.send({
+		command: 'PERFIL UPDATE',
+		data: {province: province[0]},
+		redirect: false
+	});
 
 	// move forward
 	jumpTo('gender');
@@ -99,14 +139,27 @@ function changeGender() {
 	// get the gender
 	var gender = $('.checks.gender').value();
 
+	// just jump if no changes
+	if(gender[0] == person.gender) {
+		jumpTo('avatar');
+		return true;
+	}
+
 	// validate the province
 	if(gender.length <= 0) {
 		M.toast({html: 'Escoja su género'});
 		return false;
 	}
 
-	// add to the list
+	// update the change in the frontend
 	person.gender = gender[0];
+
+	// change in the backend
+	apretaste.send({
+		command: 'PERFIL UPDATE',
+		data: {gender: gender[0]},
+		redirect: false
+	});
 
 	// change in avatar screen
 	$('#avatar-username').removeClass('M').removeClass('F').addClass(person.gender);
@@ -116,17 +169,43 @@ function changeGender() {
 }
 
 //
+// change your avatar
+//
+function changeAvatar() {
+	// get the avatar
+	var avatar = $('#avatar').attr('face');
+	var avatarColor = $('.checks.avatar-color').value();
+
+	// just jump if no changes
+	if(avatar == person.avatar && avatarColor[0] == person.avatarColor) {
+		jumpTo('default-service');
+		return true;
+	}
+
+	// update the change in the frontend
+	person.avatar = avatar;
+	person.avatarColor = avatarColor[0];
+
+	// change in the backend
+	apretaste.send({
+		command: 'PERFIL UPDATE',
+		data: {avatar: avatar, avatarColor: avatarColor[0]},
+		redirect: false
+	});
+
+	// move forward
+	jumpTo('default-service');
+}
+
+//
 // change your avatar face
 //
 function changeAvatarFace(element) {
 	// get the avatar face
-	var face = $(element).attr('face');
-
-	// add to the list
-	person.avatar = face;
+	var avatar = $(element).attr('face');
 
 	// set the avatar
-	$('#avatar').attr('face', face);
+	$('#avatar').attr('face', avatar);
 	setElementAsAvatar($('#avatar').get());
 }
 
@@ -137,83 +216,54 @@ function changeAvatarColor() {
 	// get the avatar color
 	var avatarColor = $('.checks.avatar-color').value();
 
-	// add to the list
-	person.avatarColor = avatarColor[0];
-
 	// set the avatar
-	$('#avatar').attr('color', avatarColor);
+	$('#avatar').attr('color', avatarColor[0]);
 	setElementAsAvatar($('#avatar').get());
 }
 
 //
-// change your favorites
+// change your default service
 //
-function changeInterests() {
-	// get the list of interests
-	var interests = $('.checks.interests').value();
+function changeDefaultService() {
+	// get the gender
+	var defaultService = $('.checks.default-service').value();
 
-	// validate the favorites
-	if(interests.length <= 0) {
-		M.toast({html: 'Escoja al menos un interés'});
+	// just jump if no changes
+	if(defaultService[0] == person.defaultService) {
+		jumpToTutorial();
+		return true;
+	}
+
+	// validate the province
+	if(defaultService.length <= 0) {
+		M.toast({html: 'Escoja una experiencia'});
 		return false;
 	}
 
-	// delete previous list
-	$('#influencers').empty();
+	// update the change in the frontend
+	person.defaultService = defaultService[0];
 
-	// get the app service path
-	var appServicePath = $('#appServicePath').val();
-
-	// suggest influencers covering your interests
-	influencers.forEach(function(item){
-		// filter by interest
-		if(interests.indexOf(item.first_category) == -1 && 
-			interests.indexOf(item.second_category) == -1) return;
-
-		// append the suggestion
-		$('#influencers').append(''+
-			'<li class="collection-item avatar">' +
-			'	<i class="person-avatar circle" creator_image="' + appServicePath + item.username + '.png" color="red" size="45"></i>' +
-			'	<p class="blue-grey-text">@' + item.username + '</p>' +
-			'	<p class="small">' + item.about_me + '</p>' +
-			'	<label class="secondary-content influencer-check">' +
-			'		<input type="checkbox" data="' + item.username + '" />' +
-			'		<span></span>' +
-			'	</label>' +
-			'</li>');
+	// change in the backend
+	apretaste.send({
+		command: 'PERFIL UPDATE',
+		data: {default_service: defaultService[0]},
+		redirect: false,
+		callback: {name: 'jumpToTutorial'}
 	});
-
-	// update the avatar
-	$('.person-avatar').each(function (i, item) {
-		setElementAsAvatar(item);
-	});
-
-	// move to influencers
-	jumpTo('influencers');
 }
 
 //
-// pick your influencers
+// jump to another screen
 //
-function changeInfluencers() {
-	// get array influencers to follow
-	var influencers = [];
-	$('.influencer-check input:checked').each(function() {
-		influencers.push($(this).attr('data'));
-	});
+function jumpTo(screenName) {
+	$('.screen').hide();
+	$('.screen.'+screenName).show();
+}
 
-	// validate the influencers
-	if(influencers.length <= 0) {
-		M.toast({html: 'Escoja al menos un influencer'});
-		return false;
-	}
-
-	// submit the data
-	apretaste.send({
-		command: 'BIENVENIDO UPDATE',
-		data: {
-			person: person,
-			influencers: influencers
-		}
-	});
+//
+// jump to the tutorial
+//
+function jumpToTutorial() {
+	$('.start_tutorial').prop('disabled', true);
+	apretaste.send({command: 'BIENVENIDO TUTORIAL'});
 }

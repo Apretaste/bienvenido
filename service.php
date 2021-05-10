@@ -1,12 +1,12 @@
 <?php
 
 use Apretaste\Core;
+use Apretaste\Config;
 use Apretaste\Person;
 use Apretaste\Request;
 use Apretaste\Response;
 use Apretaste\Tutorial;
-use Framework\Config;
-use Framework\Database;
+use Apretaste\Database;
 
 class Service
 {
@@ -40,58 +40,21 @@ class Service
 		// create a subset of the person object
 		$person = [
 			"username" => $request->person->username,
-			"province" => $request->person->gender,
+			"province" => (string) $request->person->provinceCode,
 			"gender" => $request->person->gender,
 			"avatar" => $request->person->avatar,
-			"avatarColor" => $request->person->avatarColor
+			"avatarColor" => $request->person->avatarColor,
+			"defaultService" => $request->person->defaultService
 		];
-
-		// get influencers list
-		$influencers = Database::queryCache("
-			SELECT B.id, B.username, B.avatar, B.about_me, A.first_category, A.second_category 
-			FROM influencers A
-			JOIN person B 
-			ON A.person_id = B.id
-			AND B.active = 1");
-
-		// get list of influencer categories
-		$categories = [];
-		foreach ($influencers as $item) {
-			$categories[$item->first_category] = Core::$influencerCategories[$item->first_category];
-			$categories[$item->second_category] = Core::$influencerCategories[$item->second_category];
-		}
 
 		// get the content
 		$content = [
 			"person" => $person,
-			"influencers" => $influencers,
-			"categories" => $categories
+			'defaultServiceList' => Core::$defaultServices
 		];
 
 		// send data to the view
-		$response->setCache();
 		$response->setTemplate("wizard.ejs", $content);
-	}
-
-	/**
-	 * Update a use profile and favorites
-	 *
-	 * @param Request
-	 * @param Response
-	 */
-	public function _update(Request $request, Response $response)
-	{
-		// update profile
-		Person::update($request->person->id, $request->input->data->person);
-
-		// connect with the influencers selected
-		foreach ($request->input->data->influencers as $username) {
-			$influencer = Person::find($username);
-			$request->person->requestFriend($influencer->id);
-		}
-
-		// redirect to the tutorial
-		return $this->_tutorial($request, $response);
 	}
 
 	/**
