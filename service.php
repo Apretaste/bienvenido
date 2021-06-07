@@ -82,7 +82,6 @@ class Service
 		];
 
 		// send data to the view
-		$response->setCache('year');
 		$response->setTemplate("tutorial.ejs", $content);
 	}
 }
